@@ -674,6 +674,17 @@ jobs:
         run: |
           mv ./SignOutput/rustdesk.msi "./SignOutput/${{ inputs.filename }}.msi" || echo "rustdesk"
 
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: prerelease-${{ github.sha }}
+          name: Prerelease ${{ github.sha }}
+          draft: false
+          prerelease: true
+          files: |
+            ./SignOutput/${{ inputs.filename }}.msi
+            ./SignOutput/${{ inputs.filename }}.exe
+
       - name: send file to rdgen server
         if: ${{ fromJson(inputs.extras).rdgen == 'true' }}
         shell: bash
