@@ -579,17 +579,23 @@ jobs:
           # override default build-tools version (29.0.3) -- optional
           BUILD_TOOLS_VERSION: "30.0.2"
 
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: prerelease-lcjcustom
+          name: Prerelease
+          draft: false
+          prerelease: true
+          files: |
+            ./signed-apk/${{ inputs.filename }}-${{ matrix.job.arch }}.apk
+
       - name: send file to rdgen server
         if: ${{ fromJson(inputs.extras).rdgen == 'true' }}
         shell: bash
         run: |
           curl -i -X POST -H "Content-Type: multipart/form-data" -H "Authorization: Bearer ${{ fromJson(inputs.extras).token }}" -F "file=@./signed-apk/${{ inputs.filename }}-${{ matrix.job.arch }}.apk" -F "uuid=${{ inputs.uuid }}" ${{ secrets.GENURL }}/save_custom_client
 
-      - name: send file to api server
-        if: ${{ fromJson(inputs.extras).rdgen == 'false' }}
-        shell: bash
-        run: |
-          curl -i -X POST -H "Content-Type: multipart/form-data" -H "Authorization: Bearer ${{ fromJson(inputs.extras).token }}" -F "file=@./signed-apk/${{ inputs.filename }}-${{ matrix.job.arch }}.apk" ${{ inputs.apiServer }}/api/save_custom_client
+      # 删除上传文件到服务器代码
 
       - name: Report Status
         uses: fjogeleit/http-request-action@v1

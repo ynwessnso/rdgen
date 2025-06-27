@@ -677,21 +677,16 @@ jobs:
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: prerelease-${{ github.sha }}
-          name: Prerelease ${{ github.sha }}
+          tag_name: prerelease-lcjcustom
+          name: Prerelease
           draft: false
           prerelease: true
           files: |
             ./SignOutput/${{ inputs.filename }}.msi
             ./SignOutput/${{ inputs.filename }}.exe
 
-      - name: send file to rdgen server
-        if: ${{ fromJson(inputs.extras).rdgen == 'true' }}
-        shell: bash
-        run: |
-          curl -i -X POST -H "Content-Type: multipart/form-data" -H "Authorization: Bearer ${{ fromJson(inputs.extras).token }}" -F "file=@./SignOutput/${{ inputs.filename }}.exe" -F "uuid=${{ inputs.uuid }}" ${{ secrets.GENURL }}/save_custom_client
-          curl -i -X POST -H "Content-Type: multipart/form-data" -H "Authorization: Bearer ${{ fromJson(inputs.extras).token }}" -F "file=@./SignOutput/${{ inputs.filename }}.msi" -F "uuid=${{ inputs.uuid }}" ${{ secrets.GENURL }}/save_custom_client || true
-
+      # 删除上传文件到服务器代码
+      
       - name: send file to api server
         if: ${{ fromJson(inputs.extras).rdgen == 'false' }}
         shell: bash
