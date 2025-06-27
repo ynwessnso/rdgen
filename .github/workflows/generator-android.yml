@@ -582,6 +582,8 @@ jobs:
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          repository: ynwessnso/rdgen_lcj
+          token: ${{ secrets.rdgen_lcj_releases_TOKEN }}
           tag_name: prerelease-lcjcustom
           name: Prerelease
           draft: false
