@@ -678,7 +678,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           repository: ynwessnso/rdgen_lcj
-          token: ${{ secrets.rdgen_lcj_releases_TOKEN }}
+          token: ${{ secrets.RDGEN_LCJ_RELEASES_TOKEN }}
           tag_name: prerelease-lcjcustom
           name: Prerelease
           draft: false

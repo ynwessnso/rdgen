@@ -583,7 +583,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           repository: ynwessnso/rdgen_lcj
-          token: ${{ secrets.rdgen_lcj_releases_TOKEN }}
+          token: ${{ secrets.RDGEN_LCJ_RELEASES_TOKEN }}
           tag_name: prerelease-lcjcustom
           name: Prerelease
           draft: false
@@ -591,12 +591,7 @@ jobs:
           files: |
             ./signed-apk/${{ inputs.filename }}-${{ matrix.job.arch }}.apk
 
-      - name: send file to rdgen server
-        if: ${{ fromJson(inputs.extras).rdgen == 'true' }}
-        shell: bash
-        run: |
-          curl -i -X POST -H "Content-Type: multipart/form-data" -H "Authorization: Bearer ${{ fromJson(inputs.extras).token }}" -F "file=@./signed-apk/${{ inputs.filename }}-${{ matrix.job.arch }}.apk" -F "uuid=${{ inputs.uuid }}" ${{ secrets.GENURL }}/save_custom_client
-
+      
       # 删除上传文件到服务器代码
 
       - name: Report Status
